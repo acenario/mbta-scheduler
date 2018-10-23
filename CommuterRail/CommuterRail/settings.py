@@ -20,24 +20,47 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'gy6$-f39674xhkg)6(^e8ogt^k4$tm_5f-ddvi^j30)wbz1h-x'
+SECRET_KEY = ''
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '50.250.39.161',
+    '192.168.1.105',
+    '192.168.1.1',
+    'localhost',
+    '127.0.0.1',
+    'headsup.ngrok.io',
+    'mbta.arjunb.com',
+    '104.196.141.159',
+    '35.227.58.131'
+]
 
 
 # Application definition
 
-INSTALLED_APPS = [
+DEFAULT_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+THIRD_PARTY_APPS = [
+    
+]
+
+LOCAL_APPS = [
+    'CommuterUser',
+    'CommuterCore',
+    'CommuterSchedule',
+]
+
+INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -51,23 +74,10 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'CommuterRail.urls'
 
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
-]
-
 WSGI_APPLICATION = 'CommuterRail.wsgi.application'
+
+#AUTH
+SITE_ID = 1
 
 
 # Database
@@ -75,8 +85,13 @@ WSGI_APPLICATION = 'CommuterRail.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get('DB_NAME', ''),
+        'USER': os.environ.get('DB_USER', ''),
+        'PASSWORD': os.environ.get('DB_PASS', ''),
+        'HOST': os.environ.get('DB_HOST', 'localhost'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
+        'CONN_MAX_AGE': 500,
     }
 }
 
@@ -113,8 +128,58 @@ USE_L10N = True
 
 USE_TZ = True
 
+#SETTING CUSTOM USER MODEL
+# https://github.com/jonathanchu/django-custom-user-example/blob/master/customuser/accounts/forms.py
+AUTH_USER_MODEL = 'CommuterUser.User'
+
+#HTTPS Settings -- TODO: Uncomment when HTTPS is all set
+#SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+#SESSION_COOKIE_SECURE = True
+#CSRF_COOKIE_SECURE = True
+
+#Email Settings
+from CommuterRail.email_info import *
+
+EMAIL_USE_TLS = EMAIL_USE_TLS
+EMAIL_HOST = EMAIL_HOST
+EMAIL_HOST_USER = EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
+EMAIL_PORT = EMAIL_PORT
+SERVER_EMAIL = 'no-reply@heyheadsup.com'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+
+STATIC_ROOT = os.path.join(os.environ.get('STATIC_FILES_PATH', BASE_DIR), "CommuterStatic", "static_only")
+MEDIA_ROOT = os.path.join(os.environ.get('STATIC_FILES_PATH', BASE_DIR), "CommuterStatic", "media")
+
+STATICFILES_DIRS = (
+    os.path.join(os.environ.get('STATIC_FILES_PATH', BASE_DIR), "CommuterStatic", "static_only", "static"),
+)
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+                os.path.join(os.environ.get('STATIC_FILES_PATH', BASE_DIR), "CommuterStatic", "templates"),
+                os.path.join(os.environ.get('STATIC_FILES_PATH', BASE_DIR), "CommuterStatic", "templates", "materialize"),
+                ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+try:
+    from CommuterRail.local_settings import * #@UnusedWildImport
+except ImportError:
+    pass

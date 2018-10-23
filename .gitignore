@@ -86,6 +86,8 @@ venv/
 ENV/
 !/Docker/env/
 
+#Editor
+.vscode/
 
 # Spyder project settings
 .spyderproject
@@ -101,6 +103,7 @@ ENV/
 .mypy_cache/
 
 #HeadsUp
-HeadsUp/HeadsUpStatic/media/
-HeadsUp/HeadsUpStatic/static_only/
+CommuterRail/CommuterStatic/media/
+CommuterRail/CommuterStatic/static_only/
 example-requests/
+CommuterRail/CommuterRail/email_info.py
