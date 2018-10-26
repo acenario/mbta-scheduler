@@ -27,3 +27,5 @@ DATABASES = {
         'CONN_MAX_AGE': 500,
     }
 }
+
+MBTA_KEY = ""

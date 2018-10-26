@@ -137,6 +137,10 @@ AUTH_USER_MODEL = 'CommuterUser.User'
 #SESSION_COOKIE_SECURE = True
 #CSRF_COOKIE_SECURE = True
 
+#MBTA
+MBTA_KEY = ""
+MBTA_URL = "https://api-v3.mbta.com"
+
 #Email Settings
 from CommuterRail.email_info import *
 
@@ -165,6 +169,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
                 os.path.join(os.environ.get('STATIC_FILES_PATH', BASE_DIR), "CommuterStatic", "templates"),
+                os.path.join(os.environ.get('STATIC_FILES_PATH', BASE_DIR), "CommuterStatic", "templates", "commuterschedule"),
                 os.path.join(os.environ.get('STATIC_FILES_PATH', BASE_DIR), "CommuterStatic", "templates", "materialize"),
                 ],
         'APP_DIRS': True,

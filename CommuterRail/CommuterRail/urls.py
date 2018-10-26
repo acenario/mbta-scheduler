@@ -17,9 +17,11 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.conf.urls.static import static
 from django.conf import settings
+from CommuterSchedule import views as schedule_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^$', schedule_views.index, name='home'),
 ]
 
 if settings.DEBUG:
