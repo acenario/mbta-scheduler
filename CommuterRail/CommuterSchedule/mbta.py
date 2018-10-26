@@ -244,7 +244,7 @@ class MBTACommuterRail(object):
                 }
         """
 
-        return self.fetch_commuter_rail_predictions(self.create_north_station_payload)
+        return self.fetch_commuter_rail_predictions(self.create_north_station_payload())
 
     def fetch_south_station_departures(self):
         """Function to fetch commuter rail departures
@@ -267,7 +267,7 @@ class MBTACommuterRail(object):
                 }
         """
 
-        return self.fetch_commuter_rail_predictions(self.create_south_station_payload)
+        return self.fetch_commuter_rail_predictions(self.create_south_station_payload())
     
     def fetch_commuter_rail_departures(self):
         """Function to fetch commuter rail departures
