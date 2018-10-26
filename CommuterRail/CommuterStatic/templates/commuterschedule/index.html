@@ -42,6 +42,7 @@
                             </tr>
                         {% else %}
                             {% for key, value in north_station.items %}
+                                {% if value.headsign != "" %}
                                 <tr>
                                     <td>{{ value.departure_time|time:"g:i a" }}</td>
                                     <td>{{ value.headsign }}</td>
@@ -53,6 +54,7 @@
                                     {% endif %}
                                     <td>{{ value.status }}</td>
                                 </tr>
+                                {% endif %}
                             {% endfor %}
                         {% endif %}
                     </tbody>
@@ -86,17 +88,19 @@
                                         </tr>
                                     {% else %}
                                         {% for key, value in south_station.items %}
-                                            <tr>
-                                                <td>{{ value.departure_time|time:"g:i a" }}</td>
-                                                <td>{{ value.headsign }}</td>
-                                                <td>{{ value.train_number }}</td>
-                                                {% if value.platform_code == None %}
-                                                <td>TBD</td>
-                                                {% else %}
-                                                <td>{{ value.platform_code }}</td>
-                                                {% endif %}
-                                                <td>{{ value.status }}</td>
-                                            </tr>
+                                            {% if value.headsign != "" %}
+                                                <tr>
+                                                    <td>{{ value.departure_time|time:"g:i a" }}</td>
+                                                    <td>{{ value.headsign }}</td>
+                                                    <td>{{ value.train_number }}</td>
+                                                    {% if value.platform_code == None %}
+                                                    <td>TBD</td>
+                                                    {% else %}
+                                                    <td>{{ value.platform_code }}</td>
+                                                    {% endif %}
+                                                    <td>{{ value.status }}</td>
+                                                </tr>
+                                            {% endif %}
                                         {% endfor %}
                                     {% endif %}
                                 </tbody>

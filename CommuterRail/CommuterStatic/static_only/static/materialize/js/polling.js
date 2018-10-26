@@ -84,7 +84,9 @@ $(document).ready(function() {
                     var platform_code = td_beg + prediction.platform_code + td_end;
                     var status = td_beg + prediction.status + td_end;
                     innerHTML = "<tr>" + departure_time + headsign + train_number + platform_code + status + "</tr>"
-                    south_station_innerHTML += innerHTML;
+                    if (prediction.headsign !== "" || prediction.headsign !== null) {
+                        south_station_innerHTML += innerHTML;
+                    }
                     //console.log(key, predictionsSouth[key]);
                 });
 
@@ -102,5 +104,5 @@ $(document).ready(function() {
         }).done(function(data){
             //Can do some extra work if needed...
         });
-    }, 15 * 1000);
+    }, 120 * 1000);
 });

@@ -185,7 +185,7 @@ class MBTACommuterRail(object):
         }
 
         for prediction in predictions:
-            prediction_order_id = prediction["relationships"]["route"]["data"]["id"]+"-"+prediction["attributes"]["departure_time"] #Created a unique key for each, could have used prediction_id, however, increased readability 
+            prediction_order_id = prediction["relationships"]["route"]["data"]["id"]+"-"+prediction["attributes"]["departure_time"]+"-"+prediction["id"] #Created a unique key for each, could have used just prediction_id, however, increased readability 
             departure_time = dateutil.parser.parse(prediction["attributes"]["departure_time"])
             status = prediction["attributes"]["status"]
             if status == "Departed" and departure_time > datetime.datetime.now(self.timezone): #Noticed that API sometimes shows `departed` even though train is late, this helps handle those scenarios
@@ -208,6 +208,7 @@ class MBTACommuterRail(object):
             and stop,trip,route ids. This helps efficiently lookup the 
             prediction that matches a specific stop,trip, or route id.
             """
+            
             cleaned_predictions["stop"][prediction["relationships"]["stop"]["data"]["id"]] = prediction_order_id
             cleaned_predictions["trip"][prediction["relationships"]["trip"]["data"]["id"]] = prediction_order_id
             cleaned_predictions["route"][prediction["relationships"]["route"]["data"]["id"]] = prediction_order_id
