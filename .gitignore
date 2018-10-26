@@ -104,7 +104,11 @@ ENV/
 
 #MBTA
 CommuterRail/CommuterStatic/media/
-CommuterRail/CommuterStatic/static_only/
+
+!CommuterRail/CommuterStatic/static_only/
+CommuterRail/CommuterStatic/static_only/*
+!CommuterRail/CommuterStatic/static_only/static/
+
 example-requests/
 CommuterRail/CommuterRail/email_info.py
 db.sqlite3

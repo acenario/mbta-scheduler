@@ -1,0 +1,12 @@
+.sidenav .user-view .circle {
+    height: 64px;
+    width: unset;
+}
+
+nav {
+    background-color: #165c96;
+}
+
+.hidden {
+    display: none;
+}
