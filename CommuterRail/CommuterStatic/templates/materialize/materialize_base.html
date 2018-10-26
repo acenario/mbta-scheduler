@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  {% load static %}
+      <title>{% block title %}MBTA Schedule | Arjun Bhatnagar{% endblock %}</title>
+	  <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 
+      {% block pre-materialize-css %}
+      {% endblock %}
+      <link type="text/css" rel="stylesheet" href="{% static 'materialize/css/materialize.min.css' %}"  media="screen,projection"/>
+      <link type="text/css" rel="stylesheet" href="{% static 'materialize/css/custom.css' %}"  media="screen,projection"/>
+      <!-- <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet"> -->
+      {% block css %}
+      {% endblock %}
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      {% block head_extra %}
+      {% endblock %}
+  </head>
+    <body>
+    <nav>
+	    <div class="nav-wrapper">
+	      <a href="#" class="flow-text brand-logo center">MBTA</a>
+	      <ul id="nav-mobile" class="left hide-on-med-and-down">
+	      	<li {% if current_page == 'home' %} class='active' {% endif %}><a href="{% url 'home' %}">Home</a></li>
+          </ul>
+          <ul id="slide-out" class="sidenav">
+            <li><div class="user-view">
+              <div class="background">
+                <img src="https://images.unsplash.com/photo-1496211398645-a5e6126505b2?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=2f31f05c4f2197ce222646deceac0bd2&auto=format&fit=crop&w=1624&q=80">
+              </div>
+              <a href="https://www.mbta.com/schedules/commuter-rail"><img class="circle" src="https://www.mass.gov/files/styles/1670x/public/2018-09/MBTA%20Logo_0.png?itok=-3OH_o_F"></a>
+              <a href="https://www.mbta.com/customer-support"><span class="white-text name">MBTA Customer Service</span></a>
+              <a href="tel:+18003926100"><span class="white-text email">+1 (800) 392-6100</span></a>
+            </div></li>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><div class="divider"></div></li>
+            <li><a class="subheader">About</a></li>
+            <li><a class="waves-effect" href="http://arjunb.com" target="_blank">Arjun B.</a></li>
+          </ul>
+          <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+	    </div>
+    </nav>
+    {% block body %}  
+	      
+     
+    {% endblock %}
+     <!--Import jQuery before materialize.js-->
+     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+     <script type="text/javascript" src="{% static 'materialize/js/materialize.min.js' %}"></script>
+     <script type="text/javascript" src="{% static 'materialize/js/nav.js' %}"></script>
+     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=EventSource&callback=polyfillsAreLoaded&flags=always,gated" defer async></script>
+     <script type="text/javascript" src="{% static 'materialize/js/mbta.js' %}"></script>
+   
+    {% block js %}
+    {% endblock %}
+    
+    </body>
+</html>

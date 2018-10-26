@@ -1,0 +1,112 @@
+{% extends "materialize_base.html" %}
+
+{% block body %}
+    <!-- <div class="container">
+        <div class="row">
+            <div class="col s12">This div is 12-columns wide on all screen sizes</div>
+            <div class="col s6">6-columns (one-half)</div>
+            <div class="col s6">6-columns (one-half)</div>
+          </div>
+    </div> -->
+    <div class="section no-pad-bot" id="index-banner">
+        <div class="container">
+            <h3 class="header center black-text">Commuter Schedule</h3>
+            <div class="row center">
+                <div class="col s6 left-align">
+                    <b><span id="day">Monday</span></b>
+                    <br />
+                    <b><span id="date">10-23-2018</span></b>
+                </div>
+                <div class="col s6 right-align">
+                    <b><span>Current Time</span></b>
+                    <br />
+                    <b><span id="time">9:24 AM</span></b>
+                </div>
+            </div>
+            <div class="row center">
+                <h6 class="center black-text">North Station</h6>
+                <table id="north" class="responsive-table">
+                    <thead>
+                        <tr>
+                            <th>Carrier</th>
+                            <th>Time</th>
+                            <th>Destination</th>
+                            <th>Train #</th>
+                            <th>Track #</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Alvin</td>
+                            <td>Eclair</td>
+                            <td>$0.87</td>
+                            <td>Alvin</td>
+                            <td>Eclair</td>
+                            <td>$0.87</td>
+                        </tr>
+                        <tr>
+                            <td>Alan</td>
+                            <td>Jellybean</td>
+                            <td>$3.76</td>
+                            <td>Alan</td>
+                            <td>Jellybean</td>
+                            <td>$3.76</td>
+                        </tr>
+                        <tr>
+                            <td>Jonathan</td>
+                            <td>Lollipop</td>
+                            <td>$7.00</td>
+                            <td>Jonathan</td>
+                            <td>Lollipop</td>
+                            <td>$7.00</td>
+                        </tr>
+                        </tbody>
+                </table>
+            </div>
+            <br />
+            <br />
+            <div class="row center">
+                <h6 class="center black-text">South Station</h6>
+                    <table id="south" class="responsive-table">
+                            <thead>
+                                <tr>
+                                    <th>Carrier</th>
+                                    <th>Time</th>
+                                    <th>Destination</th>
+                                    <th>Train #</th>
+                                    <th>Track #</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Alvin</td>
+                                    <td>Eclair</td>
+                                    <td>$0.87</td>
+                                    <td>Alvin</td>
+                                    <td>Eclair</td>
+                                    <td>$0.87</td>
+                                </tr>
+                                <tr>
+                                    <td>Alan</td>
+                                    <td>Jellybean</td>
+                                    <td>$3.76</td>
+                                    <td>Alan</td>
+                                    <td>Jellybean</td>
+                                    <td>$3.76</td>
+                                </tr>
+                                <tr>
+                                    <td>Jonathan</td>
+                                    <td>Lollipop</td>
+                                    <td>$7.00</td>
+                                    <td>Jonathan</td>
+                                    <td>Lollipop</td>
+                                    <td>$7.00</td>
+                                </tr>
+                                </tbody>
+                        </table>
+                </div>
+        </div>
+    </div>
+{% endblock %}
