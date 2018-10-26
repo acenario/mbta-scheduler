@@ -20,8 +20,9 @@ from django.conf import settings
 from CommuterSchedule import views as schedule_views
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    # url(r'^admin/', admin.site.urls), #REMOVED BECAUSE NO USER ACCESS NEEDED
     url(r'^$', schedule_views.index, name='home'),
+    url(r'^page-info/$', schedule_views.get_page_info, name="page_info"),
 ]
 
 if settings.DEBUG:

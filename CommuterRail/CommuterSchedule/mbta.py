@@ -1,6 +1,6 @@
 import requests
+import datetime
 import dateutil.parser
-from datetime import datetime
 from CommuterSchedule.utils import UTC
 from collections import OrderedDict
 
@@ -165,6 +165,7 @@ class MBTACommuterRail(object):
                     trip_id,
                     stop_id,
                     headsign,
+                    train_number,
                     platform_code
                 }
         """
@@ -172,6 +173,8 @@ class MBTACommuterRail(object):
 
         predictions_response = self.fetch_data_from_mbta(params,endpoint)
         predictions = predictions_response["data"] #Commuter rail departures
+        if not predictions: #Handle those pesky late night commuters wanting that sweet,sweet info
+            return None #Sorry, try again in a few hours
         related_data = predictions_response["included"] #Separate relational data from include parameter
 
         cleaned_predictions = {
@@ -185,7 +188,7 @@ class MBTACommuterRail(object):
             prediction_order_id = prediction["relationships"]["route"]["data"]["id"]+"-"+prediction["attributes"]["departure_time"] #Created a unique key for each, could have used prediction_id, however, increased readability 
             departure_time = dateutil.parser.parse(prediction["attributes"]["departure_time"])
             status = prediction["attributes"]["status"]
-            if status == "Departed" and departure_time > datetime.now(self.timezone): #Noticed that API sometimes shows `departed` even though train is late, this helps handle those scenarios
+            if status == "Departed" and departure_time > datetime.datetime.now(self.timezone): #Noticed that API sometimes shows `departed` even though train is late, this helps handle those scenarios
                 status = "Delayed"
 
             cleaned_predictions["predictions"][prediction_order_id] = {
@@ -196,6 +199,7 @@ class MBTACommuterRail(object):
                 "trip_id": prediction["relationships"]["trip"]["data"]["id"],
                 "stop_id": prediction["relationships"]["stop"]["data"]["id"],
                 "headsign": "",
+                "train_number": "",
                 "platform_code": "TBD" #This value will be replaced later
             }
 
@@ -220,6 +224,8 @@ class MBTACommuterRail(object):
                         prediction["headsign"] = related["attributes"]["headsign"] #Sets the headsign for the UI
                     else:
                         prediction["headsign"] = "Ended"
+                    if "name" in related["attributes"]:
+                        prediction["train_number"] = related["attributes"]["name"]
 
         return cleaned_predictions
 
@@ -240,6 +246,7 @@ class MBTACommuterRail(object):
                     trip_id,
                     stop_id,
                     headsign,
+                    train_number,
                     platform_code
                 }
         """
@@ -263,6 +270,7 @@ class MBTACommuterRail(object):
                     trip_id,
                     stop_id,
                     headsign,
+                    train_number,
                     platform_code
                 }
         """

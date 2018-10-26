@@ -102,8 +102,10 @@ ENV/
 # mypy
 .mypy_cache/
 
-#HeadsUp
+#MBTA
 CommuterRail/CommuterStatic/media/
 CommuterRail/CommuterStatic/static_only/
 example-requests/
 CommuterRail/CommuterRail/email_info.py
+db.sqlite3
+Ignore/

@@ -1,26 +1,20 @@
 {% extends "materialize_base.html" %}
 
 {% block body %}
-    <!-- <div class="container">
-        <div class="row">
-            <div class="col s12">This div is 12-columns wide on all screen sizes</div>
-            <div class="col s6">6-columns (one-half)</div>
-            <div class="col s6">6-columns (one-half)</div>
-          </div>
-    </div> -->
     <div class="section no-pad-bot" id="index-banner">
         <div class="container">
             <h3 class="header center black-text">Commuter Schedule</h3>
             <div class="row center">
                 <div class="col s6 left-align">
-                    <b><span id="day">Monday</span></b>
+                    <b><span id="today">{{ today }}</span></b>
                     <br />
-                    <b><span id="date">10-23-2018</span></b>
+                    <b><span id="date">{{ date }}</span></b>
                 </div>
                 <div class="col s6 right-align">
                     <b><span>Current Time</span></b>
                     <br />
-                    <b><span id="time">9:24 AM</span></b>
+                    <b><span id="time">{{ time }}</span></b>
+                    <span class="hidden" id="cookieToken">{{ csrf_token }}</span>
                 </div>
             </div>
             <div class="row center">
@@ -28,7 +22,7 @@
                 <table id="north" class="responsive-table">
                     <thead>
                         <tr>
-                            <th>Carrier</th>
+                            <!-- <th>Carrier</th> -->
                             <th>Time</th>
                             <th>Destination</th>
                             <th>Train #</th>
@@ -36,32 +30,32 @@
                             <th>Status</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>Alvin</td>
-                            <td>Eclair</td>
-                            <td>$0.87</td>
-                            <td>Alvin</td>
-                            <td>Eclair</td>
-                            <td>$0.87</td>
-                        </tr>
-                        <tr>
-                            <td>Alan</td>
-                            <td>Jellybean</td>
-                            <td>$3.76</td>
-                            <td>Alan</td>
-                            <td>Jellybean</td>
-                            <td>$3.76</td>
-                        </tr>
-                        <tr>
-                            <td>Jonathan</td>
-                            <td>Lollipop</td>
-                            <td>$7.00</td>
-                            <td>Jonathan</td>
-                            <td>Lollipop</td>
-                            <td>$7.00</td>
-                        </tr>
-                        </tbody>
+                    <tbody id="northStationBody">
+                        {% if north_station == None %}
+                            <tr>
+                                <!-- <td></td> -->
+                                <td>No more commuter rails for the night!</th>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        {% else %}
+                            {% for key, value in north_station.items %}
+                                <tr>
+                                    <td>{{ value.departure_time|time:"g:i a" }}</td>
+                                    <td>{{ value.headsign }}</td>
+                                    <td>{{ value.train_number }}</td>
+                                    {% if value.platform_code == None %}
+                                    <td>TBD</td>
+                                    {% else %}
+                                    <td>{{ value.platform_code }}</td>
+                                    {% endif %}
+                                    <td>{{ value.status }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
                 </table>
             </div>
             <br />
@@ -71,7 +65,7 @@
                     <table id="south" class="responsive-table">
                             <thead>
                                 <tr>
-                                    <th>Carrier</th>
+                                    <!-- <th>Carrier</th> -->
                                     <th>Time</th>
                                     <th>Destination</th>
                                     <th>Train #</th>
@@ -79,34 +73,40 @@
                                     <th>Status</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="southStationBody">
                                 <tr>
-                                    <td>Alvin</td>
-                                    <td>Eclair</td>
-                                    <td>$0.87</td>
-                                    <td>Alvin</td>
-                                    <td>Eclair</td>
-                                    <td>$0.87</td>
-                                </tr>
-                                <tr>
-                                    <td>Alan</td>
-                                    <td>Jellybean</td>
-                                    <td>$3.76</td>
-                                    <td>Alan</td>
-                                    <td>Jellybean</td>
-                                    <td>$3.76</td>
-                                </tr>
-                                <tr>
-                                    <td>Jonathan</td>
-                                    <td>Lollipop</td>
-                                    <td>$7.00</td>
-                                    <td>Jonathan</td>
-                                    <td>Lollipop</td>
-                                    <td>$7.00</td>
-                                </tr>
+                                    {% if south_station == None %}
+                                        <tr>
+                                            <!-- <td></td> -->
+                                            <td>No more commuter rails for the night!</th>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    {% else %}
+                                        {% for key, value in south_station.items %}
+                                            <tr>
+                                                <td>{{ value.departure_time|time:"g:i a" }}</td>
+                                                <td>{{ value.headsign }}</td>
+                                                <td>{{ value.train_number }}</td>
+                                                {% if value.platform_code == None %}
+                                                <td>TBD</td>
+                                                {% else %}
+                                                <td>{{ value.platform_code }}</td>
+                                                {% endif %}
+                                                <td>{{ value.status }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% endif %}
                                 </tbody>
                         </table>
                 </div>
         </div>
     </div>
+{% endblock %}
+
+{% load static %}
+{% block js %}
+        <script type="text/javascript" src="{% static 'materialize/js/polling.js' %}"></script>
 {% endblock %}
