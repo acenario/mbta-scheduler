@@ -17,8 +17,14 @@ def index(request):
     mbta = MBTACommuterRail(MBTA_KEY,MBTA_URL)
 
     departures = mbta.fetch_commuter_rail_departures()
-    north_station = departures["north_station"]["predictions"]
-    south_station = departures["south_station"]["predictions"]
+    
+    north_station = departures["north_station"]
+    if north_station:
+        north_station = departures["north_station"]["predictions"]
+
+    south_station = departures["south_station"]
+    if south_station:
+        south_station = departures["south_station"]["predictions"]
 
     now = datetime.datetime.now()
     today = now.strftime("%A")
@@ -46,15 +52,21 @@ def get_page_info(request):
             mbta = MBTACommuterRail(MBTA_KEY,MBTA_URL)
 
             departures = mbta.fetch_commuter_rail_departures()
-            north_station = departures["north_station"]["predictions"]
-            south_station = departures["south_station"]["predictions"]
 
-            for key,value in north_station.items():
-                value["departure_time"] = value["departure_time"].strftime("%-I:%M %p").replace("AM","a.m.").replace("PM", "p.m.")
+            north_station = departures["north_station"]
+            if north_station:
+                north_station = departures["north_station"]["predictions"]
+
+                for key,value in north_station.items():
+                    value["departure_time"] = value["departure_time"].strftime("%-I:%M %p").replace("AM","a.m.").replace("PM", "p.m.")
+                
+            south_station = departures["south_station"]
+            if south_station:
+                south_station = departures["south_station"]["predictions"]
+
+                for key,value in south_station.items():
+                    value["departure_time"] = value["departure_time"].strftime("%-I:%M %p").replace("AM","a.m.").replace("PM", "p.m.")
             
-            for key,value in south_station.items():
-                value["departure_time"] = value["departure_time"].strftime("%-I:%M %p").replace("AM","a.m.").replace("PM", "p.m.")
-
             now = datetime.datetime.now()
             today = now.strftime("%A")
             date = now.strftime("%Y-%-m-%-d")

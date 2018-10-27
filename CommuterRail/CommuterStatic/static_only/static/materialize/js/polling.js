@@ -43,9 +43,9 @@ $(document).ready(function() {
             document.getElementById('today').innerHTML = data["today"]
             var predictionsNorth = data["north_station"];
             var predictionsSouth = data["south_station"];
-            
+            var endOfTrains = "<tr><td>No more commuter rails for the night!</th><td></td><td></td><td></td><td></td></tr>";
 
-            if ("north_station" in data) {
+            if ("north_station" in data && predictionsNorth !== null) {
                 var north_station_innerHTML = "";
 
                 Object.keys(predictionsNorth).forEach(function(key) {
@@ -68,7 +68,7 @@ $(document).ready(function() {
                 document.getElementById('northStationBody').innerHTML = north_station_innerHTML;
             } 
 
-            if ("south_station" in data) {
+            if ("south_station" in data && predictionsSouth !== null) {
                 var south_station_innerHTML = "";
 
                 Object.keys(predictionsSouth).forEach(function(key) {
@@ -93,6 +93,14 @@ $(document).ready(function() {
                 document.getElementById('southStationBody').innerHTML = south_station_innerHTML;
             } 
 
+            if (predictionsNorth === null) {
+                document.getElementById('northStationBody').innerHTML = endOfTrains;
+            } 
+
+            if (predictionsSouth === null) {
+                document.getElementById('southStationBody').innerHTML = endOfTrains;
+            }
+
             // M.toast({html: "Data Refreshed!"});
         },
         error: function(xhr, status, error) {
@@ -104,5 +112,5 @@ $(document).ready(function() {
         }).done(function(data){
             //Can do some extra work if needed...
         });
-    }, 120 * 1000);
+    }, 15 * 1000);
 });

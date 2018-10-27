@@ -23,6 +23,15 @@ class MBTACommuterRail(object):
         self.timezone = UTC()
         self.mbta_key = mbta_key
         self.mbta_url = mbta_url
+        self.north_station = "place-north"
+        self.south_station = "South Station"
+        self.commuter_vehicle_type = "2"
+        self.routes_endpoint = "/routes"
+        self.predictions_endpoint = "/predictions"
+        self.direction_away = 0
+        self.direction_towards = 1
+        self.unknown_platform = "TBD"
+        self.missing_data = ""
 
         if mbta_url != "https://api-v3.mbta.com":
             raise Exception("The Project doesn't currently support different versions of the API. It only supports v3 with this url: {}".format("https://api-v3.mbta.com"))
@@ -59,11 +68,11 @@ class MBTACommuterRail(object):
 
         """
 
-        endpoint = "/routes"
+        endpoint = self.routes_endpoint
 
         payload = {
-            "filter[stop]":"place-north",
-            "filter[type]": "2"
+            "filter[stop]": self.north_station,
+            "filter[type]": self.commuter_vehicle_type
         }
 
         routes_response = self.fetch_data_from_mbta(payload,endpoint)
@@ -90,9 +99,9 @@ class MBTACommuterRail(object):
         
         ns_payload = OrderedDict() #Using Ordered Dict to keep track of the sorted list
         ns_payload["include"] = "stop,route,trip"
-        ns_payload["filter[stop]"] = "place-north"
+        ns_payload["filter[stop]"] = self.north_station
         ns_payload["filter[route]"] = ",".join(list(str(route) for route in north_station_routes))
-        ns_payload["filter[direction_id]"] = 0
+        ns_payload["filter[direction_id]"] = self.direction_away
         ns_payload["sort"] = "departure_time"
 
         return ns_payload
@@ -107,11 +116,11 @@ class MBTACommuterRail(object):
 
         """
 
-        endpoint = "/routes"
+        endpoint = self.routes_endpoint
 
         payload = {
-            "filter[stop]":"South Station",
-            "filter[type]": "2"
+            "filter[stop]": self.south_station,
+            "filter[type]": self.commuter_vehicle_type
         }
 
         routes_response = self.fetch_data_from_mbta(payload,endpoint)
@@ -138,9 +147,9 @@ class MBTACommuterRail(object):
         
         ss_payload = OrderedDict() #Using Ordered Dict to keep track of the sorted list
         ss_payload["include"] = "stop,route,trip"
-        ss_payload["filter[stop]"] = "South Station"
+        ss_payload["filter[stop]"] = self.south_station
         ss_payload["filter[route]"] = ",".join(list(str(route) for route in south_station_routes))
-        ss_payload["filter[direction_id]"] = 0
+        ss_payload["filter[direction_id]"] = self.direction_away
         ss_payload["sort"] = "departure_time"
 
         return ss_payload
@@ -169,7 +178,7 @@ class MBTACommuterRail(object):
                     platform_code
                 }
         """
-        endpoint = "/predictions"
+        endpoint = self.predictions_endpoint
 
         predictions_response = self.fetch_data_from_mbta(params,endpoint)
         predictions = predictions_response["data"] #Commuter rail departures
@@ -198,9 +207,9 @@ class MBTACommuterRail(object):
                 "route_id": prediction["relationships"]["route"]["data"]["id"],
                 "trip_id": prediction["relationships"]["trip"]["data"]["id"],
                 "stop_id": prediction["relationships"]["stop"]["data"]["id"],
-                "headsign": "",
-                "train_number": "",
-                "platform_code": "TBD" #This value will be replaced later
+                "headsign": self.missing_data,
+                "train_number": self.missing_data,
+                "platform_code": self.unknown_platform #This value will be replaced later
             }
 
             """
